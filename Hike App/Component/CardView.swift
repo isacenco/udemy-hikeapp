@@ -12,6 +12,7 @@ struct CardView: View {
     
     @State private var imageNumber: Int = 1
     @State private var randomNumber: Int = 1
+    @State private var isShowingSheet: Bool = false
     
     // MARK: - FUNCTIONS
     
@@ -54,8 +55,14 @@ struct CardView: View {
                         Button {
                             // ACTION: Show a sheet
                             print("The button was pressed")
+                            isShowingSheet.toggle()
                         } label: {
                             CustomButtonView()
+                        }
+                        .sheet(isPresented: $isShowingSheet) {
+                            SettingsView()
+                                .presentationDragIndicator(.visible)
+                                .presentationDetents([.medium, .large])
                         }
                     }
                     
@@ -67,18 +74,8 @@ struct CardView: View {
                 .padding(.horizontal, 30)
                 // MARK: - MAIN CONTENT
                 ZStack {
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    Color("ColorIndigoMedium"),
-                                    Color("ColorIndigoLight")
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .frame(width: 256, height: 256)
+                    CustomCircleView()
+                    
                     Image("image-\(imageNumber)")
                         .resizable()
                         .scaledToFit()
